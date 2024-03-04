@@ -1,0 +1,25 @@
+using UnityEngine;
+
+public class Animation_Script : MonoBehaviour
+{
+    [SerializeField] private Transform targetPoint; // The point around which the object will rotate
+    [SerializeField] private float rotationSpeed = 5f; // The speed of rotation
+
+    void Update()
+    {
+        if (targetPoint == null)
+        {
+            Debug.LogError("Target point is not assigned!");
+            return;
+        }
+
+        // Calculate the direction from the object to the target point
+        Vector3 directionToTarget = targetPoint.position - transform.position;
+
+        // Calculate the rotation needed to look at the target point
+        Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
+
+        // Smoothly rotate towards the target rotation
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+    }
+}
